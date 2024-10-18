@@ -2,29 +2,7 @@ import './styles.css';
 import SearchBar from "../../../components/SearchBar";
 import CatalogCard from "../../../components/CatalogCard";
 import ButtonNextPage from "../../../components/ButtonNextPage";
-import {ProductDTO} from "../../../models/product.ts";
-
-const product: ProductDTO = {
-    id: 2,
-    name: "Smart TV",
-    description: "Esta TV é muito bonita",
-    imgUrl: "https://raw.githubusercontent.com/devsuperior/dscatalog-resources/refs/heads/master/backend/img/2-big.jpg",
-    price: 2500.99,
-    categories: [
-        {
-            id: 2,
-            name: "Eletrônicos"
-        },
-        {
-            id: 3,
-            name: "Computadores"
-        },
-        {
-            id: 4,
-            name: "Importados"
-        }
-    ]
-}
+import * as productService from '../../../services/product-service.ts';
 
 export default function Catalog() {
 
@@ -33,16 +11,12 @@ export default function Catalog() {
             <section id="catalog-section" className="dsc-container">
                 <SearchBar/>
                 <div className="dsc-catalog-cards dsc-mb20 dsc-mt20">
-                    <CatalogCard product={product}/>
-                    <CatalogCard product={product}/>
-                    <CatalogCard product={product}/>
-                    <CatalogCard product={product}/>
-                    <CatalogCard product={product}/>
-                    <CatalogCard product={product}/>
-                    <CatalogCard product={product}/>
-                    <CatalogCard product={product}/>
-                    <CatalogCard product={product}/>
-                    <CatalogCard product={product}/>
+                    {
+                        // Não esquecer de uma "key" para coleções
+                        productService.findAll().map(
+                            product => <CatalogCard key={product.id} product={product}/>
+                        )
+                    }
                 </div>
 
                 <ButtonNextPage/>
