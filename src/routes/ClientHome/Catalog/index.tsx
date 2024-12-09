@@ -12,6 +12,7 @@ export default function Catalog() {
     const [products, setProducts] = useState<ProductDTO[]>([]);
 
     useEffect(() => {
+
         productService.findAll()
             .then(response => {
                 // .content pq a resposta esta dentro da lista content (postman)
