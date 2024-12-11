@@ -2,3 +2,7 @@
     /* vertical 20px horizontal 0 */
     padding: 20px 0;
 }
+
+.dsc-pointer {
+    cursor: pointer;
+}

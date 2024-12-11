@@ -1,70 +1,77 @@
 import "./styles.css";
-import computerImg from "../../../assets/computer.png";
-import {i} from "vite/dist/node/types.d-aGj9QkWt";
-
-const cart = {
-
-    items: [
-        {
-            productId: 4,
-            quantity: 1,
-            name: "PC Gamer",
-            price: 1200,
-            imgUrl: "https://raw.githubusercontent.com/devsuperior/dscatalog-resources/master/backend/img/4-big.jpg"
-        },
-        {
-            productId: 5,
-            quantity: 2,
-            name: "Rails for Dummies",
-            price: 100.99,
-            imgUrl: "https://raw.githubusercontent.com/devsuperior/dscatalog-resources/master/backend/img/5-big.jpg"
-        }
-    ]
-}
+import {useState} from "react";
+import * as cartService from "../../../services/cart-service.ts";
+import {OrderDTO} from "../../../models/order.ts";
+import {Link} from "react-router-dom";
 
 
 export default function Cart() {
 
+    const [cart, setCart] = useState<OrderDTO>(cartService.getCart());
+
+    function handleClearClick() {
+        cartService.clearCart();
+        setCart(cartService.getCart());
+    }
+
     return (
         <main>
             <section id="cart-container-section" className="dsc-container">
-                <div className="dsc-card dsc-mb20">
 
+                {
+                    cart.items.length === 0
+                        ? (
+                            <div>
+                                <h2 className="dsc-section-title dsc-mb20">Seu carrinho está vazio</h2>
+                            </div>
+                        )
+                        : (
+                            <div className="dsc-card dsc-mb20">
 
-                    {
-                        // para cada item renderizar o html
-                        // quando se vai renderizar uma coleção, devemos colocar o atributo key
-                        cart.items.map(item => (
-                            <div key={item.productId} className="dsc-cart-item-container dsc-line-bottom">
-                                <div className="dsc-cart-item-left">
-                                    <img src={item.imgUrl} alt={item.name}/>
-                                    <div className="dsc-cart-item-description">
-                                        <h3>{item.name}</h3>
-                                        <div className="dsc-cart-item-quantity-container">
-                                            <div className="dsc-cart-item-quantity-btn">-</div>
-                                            <p>{item.quantity}</p>
-                                            <div className="dsc-cart-item-quantity-btn">+</div>
+                                {
+                                    // para cada item renderizar o html
+                                    // quando se vai renderizar uma coleção, devemos colocar o atributo key
+                                    cart.items.map(item => (
+                                        <div key={item.productId} className="dsc-cart-item-container dsc-line-bottom">
+                                            <div className="dsc-cart-item-left">
+                                                <img src={item.imgUrl} alt={item.name}/>
+                                                <div className="dsc-cart-item-description">
+                                                    <h3>{item.name}</h3>
+                                                    <div className="dsc-cart-item-quantity-container">
+                                                        <div className="dsc-cart-item-quantity-btn">-</div>
+                                                        <p>{item.quantity}</p>
+                                                        <div className="dsc-cart-item-quantity-btn">+</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="dsc-cart-item-right">
+                                                R$ {item.subTotal.toFixed(2)}
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div className="dsc-cart-item-right">
-                                    R$ {(item.price * item.quantity).toFixed(2)}
+                                    ))
+                                }
+
+                                <div className="dsc-cart-total-container">
+                                    <h3>R$ {cart.total.toFixed(2)}</h3>
                                 </div>
                             </div>
-                        ))
-                    }
+                        )
+                }
 
-                    <div className="dsc-cart-total-container">
-                        <h3>R$ 15000,00</h3>
-                    </div>
-                </div>
+
                 <div className="dsc-btn-page-container">
                     <div className="dsc-btn dsc-btn-blue">
                         Finalizar pedido
                     </div>
-                    <div className="dsc-btn dsc-btn-white">
-                        Continuar comprando
+                    <Link to="/catalog">
+                        <div className="dsc-btn dsc-btn-white">
+                            Continuar comprando
+                        </div>
+                    </Link>
+                    <div onClick={handleClearClick} className="dsc-btn dsc-btn-white">
+                        Limpar carrinho
                     </div>
+
                 </div>
             </section>
         </main>
