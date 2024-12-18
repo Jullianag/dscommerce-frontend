@@ -3,16 +3,20 @@ import ProductDetailsCard from "../../../components/ProductDetailsCard";
 import ButtonPrimary from "../../../components/ButtonPrimary";
 import ButtonInverse from "../../../components/ButtonInverse";
 import {Link, useNavigate, useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {ProductDTO} from "../../../models/product.ts";
 import * as productService from '../../../services/product-service.ts';
 import * as cartService from '../../../services/cart-service.ts';
+import {ContextCartCount} from "../../../utils/context-cart.ts";
 
 export default function ProductDetails() {
 
     const params = useParams();
 
     const navigate = useNavigate();
+
+    // mesmo nome do que foi estruturado no context-cart.ts
+    const {setContextCartCount} = useContext(ContextCartCount);
 
     // declara o estado
     const [product, setProduct] = useState<ProductDTO>();
@@ -31,7 +35,10 @@ export default function ProductDetails() {
 
         // só adiciona no carrinho se o produto não for undefined
         if (product) {
+            // chama a função que atualiza o carrinho
             cartService.addProduct(product);
+            // contexto global atualizado (número de itens no carrinho)
+            setContextCartCount(cartService.getCart().items.length);
             navigate("/cart");
         }
     }

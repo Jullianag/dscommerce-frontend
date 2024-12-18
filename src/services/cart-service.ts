@@ -6,6 +6,7 @@ export function saveCart(cart: OrderDTO) {
     cartRepository.save(cart);
 }
 
+// devolve o carrinho
 export function getCart() : OrderDTO {
     return cartRepository.get();
 }
