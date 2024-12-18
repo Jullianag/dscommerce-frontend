@@ -44,9 +44,10 @@
 
 .dsc-search-bar-submit {
     font-size: 20px;
+    cursor: pointer;
 }
 
 .dsc-search-bar-reset {
     font-size: 20px;
-
+    cursor: pointer;
 }

@@ -6,25 +6,46 @@ import {useEffect, useState} from "react";
 import {ProductDTO} from "../../../models/product.ts";
 import * as productService from '../../../services/product-service.ts';
 
+type QueryParams = {
+    page: number;
+    name: string;
+}
+
 export default function Catalog() {
+
+    const [isLastPage, setIsLastPage] = useState<boolean>(false);
+
+    // sempre que se usar mais de um parâmetro para a buscar, usar objeto
 
     // ProductDTO[] pq é uma lista de produtos
     const [products, setProducts] = useState<ProductDTO[]>([]);
 
-    const [productName, setProductName] = useState("");
+    const [queryParams, setQueryParams] = useState<QueryParams>({
+        page: 0,
+        name: ""
+    });
 
     useEffect(() => {
 
-        productService.findPageRequest(0, productName)
+        productService.findPageRequest(queryParams.page, queryParams.name)
             .then(response => {
                 // .content pq a resposta esta dentro da lista content (postman)
-                setProducts(response.data.content);
+                const nextPage = response.data.content;
+                setProducts(products.concat(nextPage));
+                setIsLastPage(response.data.last);
             });
         // colocar nas dependencias tbm (monitoração), useEffect observa
-    }, [productName]);
+    }, [queryParams]);
 
     function handleSearch(searchText: string) {
-        setProductName(searchText)
+        // zera a lista para fazer uma busca
+        setProducts([]);
+        // page: 0 para poder comerçar a busca da página zero
+        setQueryParams({...queryParams, page: 0, name: searchText});
+    }
+
+    function handleNextPageClick() {
+        setQueryParams({...queryParams, page: queryParams.page + 1});
     }
 
     return (
@@ -41,7 +62,13 @@ export default function Catalog() {
                     }
                 </div>
 
-                <ButtonNextPage/>
+                {
+                    !isLastPage &&
+                    <div onClick={handleNextPageClick}>
+                        <ButtonNextPage/>
+                    </div>
+                }
+
             </section>
 
         </main>
