@@ -19,7 +19,6 @@ export default function Login() {
                 // salva no localStorage
                 // pegar os dados no postman "access_token"
                 authService.saveAccessToken(response.data.access_token);
-                console.log(response.data);
             })
             .catch(error => {
                 console.log("Erro no login", error);
