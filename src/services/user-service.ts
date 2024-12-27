@@ -1,12 +1,13 @@
 import {RequestBackend} from "../utils/requests.ts";
-import * as authService from "./auth-service.ts";
+import {AxiosRequestConfig} from "axios";
 
 // função precisa do token
 export function findMe() {
 
-    const headers = {
-    Authorization: "Bearer " + authService.getAccessToken()
+    const config : AxiosRequestConfig ={
+        url: "/users/me",
+        withCredentials: true,
     }
 
-    return RequestBackend({ url: `/users/me`, headers: headers });
+    return RequestBackend(config);
 }
