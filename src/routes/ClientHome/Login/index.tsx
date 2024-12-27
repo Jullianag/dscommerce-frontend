@@ -16,6 +16,9 @@ export default function Login() {
         loginRequest(formData)
         authService.loginRequest(formData)
             .then(response => {
+                // salva no localStorage
+                // pegar os dados no postman "access_token"
+                authService.saveAccessToken(response.data.access_token);
                 console.log(response.data);
             })
             .catch(error => {
