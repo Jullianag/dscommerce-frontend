@@ -85,10 +85,6 @@ header {
   padding: 0 20px;
 }
 
-.dsc-header-admin {
-  color: var( --dsc-color-font-tertiary);
-  background-color: var(--dsc-color-bg-quaternary);
-}
 
 nav {
   display: flex;
