@@ -1,4 +1,4 @@
-import {AccessTokenPayloadDTO, CredentialsDTO} from "../models/auth.ts";
+import {AccessTokenPayloadDTO, CredentialsDTO, RoleEnum} from "../models/auth.ts";
 import {CLIENT_ID, CLIENT_SECRET} from "../utils/system.ts";
 import * as QueryString from "qs";
 import {AxiosRequestConfig} from "axios";
@@ -45,6 +45,7 @@ export function getAccessTokenPayload(): AccessTokenPayloadDTO | undefined {
         return token == null
             ? undefined
             : (jwtDecode(token) as AccessTokenPayloadDTO);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
         return undefined;
     }
@@ -55,6 +56,28 @@ export function isAuthenticated(): boolean {
 
     if (tokenPayload && tokenPayload.exp * 1000 > Date.now()) {
         return true
+    }
+    return false;
+}
+
+export function hasAnyRoles(roles: RoleEnum[]): boolean {
+
+    if (roles.length === 0) {
+        return true;
+    }
+
+    // esta variável tem a lista dos roles de usuários logados
+    const tokenPayload = getAccessTokenPayload();
+
+    if (tokenPayload !== undefined) {
+        // percorre a lista de roles
+        for (const i = 0; i < roles.length; i++) {
+            if (tokenPayload.authorities.includes(roles[i])) {
+                return true;
+            }
+        }
+        // função de alta ordem
+        //return roles.some(role => tokenData.authorities.includes(role));
     }
     return false;
 }
