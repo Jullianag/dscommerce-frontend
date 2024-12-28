@@ -16,7 +16,6 @@ export default function Catalog() {
     const [isLastPage, setIsLastPage] = useState<boolean>(false);
 
     // sempre que se usar mais de um parâmetro para a buscar, usar objeto
-
     // ProductDTO[] pq é uma lista de produtos
     const [products, setProducts] = useState<ProductDTO[]>([]);
 

@@ -71,7 +71,7 @@ export function hasAnyRoles(roles: RoleEnum[]): boolean {
 
     if (tokenPayload !== undefined) {
         // percorre a lista de roles
-        for (const i = 0; i < roles.length; i++) {
+        for (let i = 0; i < roles.length; i++) {
             if (tokenPayload.authorities.includes(roles[i])) {
                 return true;
             }
