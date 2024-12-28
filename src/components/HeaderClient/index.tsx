@@ -5,6 +5,8 @@ import iconAdmin from "../../assets/admin.svg";
 import * as authService from "../../services/auth-service.ts";
 import {useContext} from "react";
 import {ContextToken} from "../../utils/context-token.ts";
+import LoggedUser from "../LoggedUser";
+
 
 export default function HeaderClient() {
 
@@ -36,9 +38,7 @@ export default function HeaderClient() {
                             </div>
                         </Link>
                     </div>
-                    <Link to="/login">
-                        Entrar
-                    </Link>
+                    <LoggedUser/>
                 </div>
             </nav>
         </header>
