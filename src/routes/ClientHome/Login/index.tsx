@@ -1,10 +1,16 @@
 import './styles.css';
 import {loginRequest} from "../../../services/auth-service.ts";
-import {useState} from "react";
+import {useContext, useState} from "react";
 import {CredentialsDTO} from "../../../models/auth.ts";
 import * as authService from "../../../services/auth-service.ts";
+import {useNavigate} from "react-router-dom";
+import {ContextToken} from "../../../utils/context-token.ts";
 
 export default function Login() {
+
+    const { setContextTokenPayload } = useContext(ContextToken);
+
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState<CredentialsDTO>({
         username: '',
@@ -19,6 +25,11 @@ export default function Login() {
                 // salva no localStorage
                 // pegar os dados no postman "access_token"
                 authService.saveAccessToken(response.data.access_token);
+
+                // salva após o login, para atualizar o carrinho
+                setContextTokenPayload(authService.getAccessTokenPayload());
+
+                navigate("/cart");
             })
             .catch(error => {
                 console.log("Erro no login", error);
