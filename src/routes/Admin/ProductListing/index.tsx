@@ -4,6 +4,8 @@ import deleteIcon from "../../../assets/delete.svg";
 import {useEffect, useState} from "react";
 import * as productService from "../../../services/product-service.ts";
 import {ProductDTO} from "../../../models/product.ts";
+import SearchBar from "../../../components/SearchBar";
+import ButtonNextPage from "../../../components/ButtonNextPage";
 
 type QueryParams = {
     page: number;
@@ -34,6 +36,15 @@ export default function ProductListing() {
         // colocar nas dependencias tbm (monitoração), useEffect observa
     }, [queryParams]);
 
+    function handleSearch(searchText: string) {
+        setProducts([]);
+        setQueryParams({...queryParams, page: 0, name: searchText});
+    }
+
+    function handleNextPageClick() {
+        setQueryParams({...queryParams, page: queryParams.page + 1});
+    }
+
 
     return (
         <main>
@@ -44,11 +55,7 @@ export default function ProductListing() {
                     <div className="dsc-btn dsc-btn-white">Novo</div>
                 </div>
 
-                <form className="dsc-search-bar">
-                    <button type="submit">🔎︎</button>
-                    <input type="text" placeholder="Nome do produto"/>
-                    <button type="reset">🗙</button>
-                </form>
+                <SearchBar onSearch={handleSearch} />
 
                 <table className="dsc-table dsc-mb20 dsc-mt20">
                     <thead>
@@ -64,7 +71,7 @@ export default function ProductListing() {
                     <tbody>
                     {
                         products.map(products => (
-                            <tr>
+                            <tr key={products.id}>
                                 <td className="dsc-tb576">{products.id}</td>
                                 <td><img className="dsc-product-listing-image" src={products.imgUrl} alt={products.name}/></td>
                                 <td className="dsc-tb768">R$ {products.price.toFixed(2)}</td>
@@ -78,7 +85,12 @@ export default function ProductListing() {
                     </tbody>
                 </table>
 
-                <div className="dsc-btn-next-page">Carregar mais</div>
+                {
+                    !isLastPage &&
+                    <div>
+                        <ButtonNextPage onNextPage={handleNextPageClick}/>
+                    </div>
+                }
             </section>
         </main>
     );
