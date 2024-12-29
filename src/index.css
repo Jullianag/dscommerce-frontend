@@ -96,10 +96,10 @@ nav h1 {
   font-size: 16px;
 }
 
-nav a {
-  font-size: 14px;
-  font-weight: 700;
-}
+
+
+
+
 
 .dsc-navbar-right {
   display: flex;
@@ -119,6 +119,7 @@ nav a {
   margin-right: 20px;
   display: flex;
   align-items: center;
+
 }
 
 .dsc-menu-item p {
@@ -127,25 +128,12 @@ nav a {
   font-size: 14px;
 }
 
+
 .dsc-menu-item-active {
   font-weight: 700;
 }
 
-.dsc-logged-user {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
 
-.dsc-logged-user span {
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.dsc-logged-user p {
-  font-size: 12px;
-}
 
 @media (min-width: 576px) {
   nav h1 {

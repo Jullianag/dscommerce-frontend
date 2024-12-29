@@ -3,3 +3,8 @@
     color: var(--dsc-color-font-primary);
     background-color: var(--dsc-color-bg-secondary);
 }
+
+.dsc-nav {
+    font-size: 14px;
+    font-weight: 700;
+}
