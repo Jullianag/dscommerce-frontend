@@ -5,6 +5,7 @@ import * as authService from "../../../services/auth-service.ts";
 import {useNavigate} from "react-router-dom";
 import {ContextToken} from "../../../utils/context-token.ts";
 import FormInput from "../../../components/FormInput";
+import * as forms from "../../../utils/forms.ts";
 
 export default function Login() {
 
@@ -56,7 +57,8 @@ export default function Login() {
         // pega o valor que esta digitado na caixinha
         const value = event.target.value;
         const name = event.target.name;
-        setFormData({...formData, [name]: {...formData[name], value: value} })
+        // consultar o arquivo forms.ts
+        setFormData(forms.update(formData, name, value));
     }
 
     return (
