@@ -37,7 +37,8 @@ export default function Login() {
     function handleSubmit(event: any) {
         event.preventDefault();
         loginRequest(formData)
-        authService.loginRequest({username: formData.username.value, password: formData.password.value})
+        // consutlar forms.ts
+        authService.loginRequest(forms.toValue(formData))
             .then(response => {
                 // salva no localStorage
                 // pegar os dados no postman "access_token"
