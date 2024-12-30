@@ -1,10 +1,10 @@
 import './styles.css';
 import {loginRequest} from "../../../services/auth-service.ts";
 import {useContext, useState} from "react";
-import {CredentialsDTO} from "../../../models/auth.ts";
 import * as authService from "../../../services/auth-service.ts";
 import {useNavigate} from "react-router-dom";
 import {ContextToken} from "../../../utils/context-token.ts";
+import FormInput from "../../../components/FormInput";
 
 export default function Login() {
 
@@ -12,15 +12,31 @@ export default function Login() {
 
     const navigate = useNavigate();
 
-    const [formData, setFormData] = useState<CredentialsDTO>({
-        username: '',
-        password: ''
-    })
+    const [formData, setFormData] = useState<any>({
+        // o username e o password passaram a ser objetos
+        username: {
+            value: "",
+            id: "username",
+            name: "username",
+            type: "text",
+            placeholder: "Email",
+            validation: function (value: string) {
+                return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(value.toLowerCase());},
+            message: "Favor informar um email válido",
+        },
+        password: {
+            value: "",
+            id: "password",
+            name: "password",
+            type: "password",
+            placeholder: "Senha",
+        }
+    });
 
     function handleSubmit(event: any) {
         event.preventDefault();
         loginRequest(formData)
-        authService.loginRequest(formData)
+        authService.loginRequest({username: formData.username.value, password: formData.password.value})
             .then(response => {
                 // salva no localStorage
                 // pegar os dados no postman "access_token"
@@ -40,7 +56,7 @@ export default function Login() {
         // pega o valor que esta digitado na caixinha
         const value = event.target.value;
         const name = event.target.name;
-        setFormData({...formData, [name]: value})
+        setFormData({...formData, [name]: {...formData[name], value: value} })
     }
 
     return (
@@ -52,25 +68,29 @@ export default function Login() {
                             <h2>Login</h2>
                             <div className="dsc-form-controls-container">
                                 <div>
-                                    <input
+                                    <FormInput
+                                        { ...formData.username }
+                                        /*
+                                        A forma acima substitui o que estava aqui
                                         // mesmo valor no name que está definido no const
                                         name="username"
-                                        value = {formData.username}
-                                        className="dsc-form-control"
+                                        value = {formData.username.value}
                                         type="text"
                                         placeholder="Email"
+                                         */
+                                        className="dsc-form-control"
+                                        /* onChange deve ser mantido, pois toda vez que algo for digitado na caixinha,
+                                         o valor seja alterado
+                                         */
                                         // quando se faz o value, devemos fazer o onChange tbm
                                         onChange={handleInputChange}
                                     />
                                     <div className="dsc-form-error"></div>
                                 </div>
                                 <div>
-                                    <input
-                                        name="password"
-                                        value={formData.password}
+                                    <FormInput
+                                        { ...formData.password }
                                         className="dsc-form-control"
-                                        type="password"
-                                        placeholder="Senha"
                                         onChange={handleInputChange}
                                     />
                                 </div>
