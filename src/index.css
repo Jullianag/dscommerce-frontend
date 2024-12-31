@@ -225,12 +225,13 @@ nav h1 {
   border: 1px solid var( --dsc-color-card-border);
 }
 
-.dsc-form-control[data-invalid="true"] {
+/* só mostra o vermelho quando estiver "sujo" e inválido */
+.dsc-form-control[data-dirty="true"][data-invalid="true"] {
   border: 1px solid var(--dsc-color-error);
 }
 
 /* faz o próximo div ficar com display unset */
-.dsc-form-control[data-invalid="true"] ~ div {
+.dsc-form-control[data-dirty="true"][data-invalid="true"] ~ div {
   display: unset;
 }
 
