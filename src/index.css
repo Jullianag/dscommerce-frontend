@@ -225,6 +225,15 @@ nav h1 {
   border: 1px solid var( --dsc-color-card-border);
 }
 
+.dsc-form-control[data-invalid="true"] {
+  border: 1px solid var(--dsc-color-error);
+}
+
+/* faz o próximo div ficar com display unset */
+.dsc-form-control[data-invalid="true"] ~ div {
+  display: unset;
+}
+
 .dsc-form-control:focus {
   outline: none;
 }
@@ -233,15 +242,12 @@ nav h1 {
   color: var(--dsc-color-font-placeholder);
 }
 
-.dsc-input-error {
-  border: 1px solid var(--dsc-color-error);
-}
-
 .dsc-form-error {
   color: var(--dsc-color-error);
   font-size: 12px;
   padding-left: 4px;
-
+  /* a mensagem não aparece */
+  display: none;
 }
 
 .dsc-select:invalid {

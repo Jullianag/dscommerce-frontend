@@ -6,10 +6,11 @@ export default function FormInput(props: any) {
         para ser possível validar no input,
         pois este não possui este campo
      */
-    const {validation, ...inputProps} = props;
+    const {validation, invalid, ...inputProps} = props;
 
     return (
 
-        <input { ...inputProps }/>
+        // criando dentro do input um atributo adicional
+        <input { ...inputProps } data-invalid={invalid}/>
     );
 }
