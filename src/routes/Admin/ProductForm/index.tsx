@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import FormInput from "../../../components/FormInput";
 import * as forms from "../../../utils/forms.ts";
 import * as productService from "../../../services/product-service.ts";
+import {dirtyAndValidate} from "../../../utils/forms.ts";
 
 export default function ProductForm() {
 
@@ -42,9 +43,6 @@ export default function ProductForm() {
 
     useEffect(() => {
 
-        const result = forms.toDirty(formData, "price");
-        console.log(result);
-
         if (isEditing) {
             // convertendo para número
             productService.findById(Number(params.productId))
@@ -56,14 +54,14 @@ export default function ProductForm() {
     }, []);
 
     function handleInputChange(event: any) {
-        const dataUpdate = forms.update(formData, event.target.name, event.target.value);
-        const dataValidated = forms.validate(dataUpdate, event.target.name);
-        setFormData(dataValidated);
+        //const result = forms.updateAndValidate(formData, event.target.name, event.target.value);
+        //setFormData(result);
+        setFormData(forms.updateAndValidate(formData, event.target.name, event.target.value))
     }
 
     function handleTurnDirty(name: string) {
         // função que vai sujar o campo name
-        const newFormData = forms.toDirty(formData, name);
+        const newFormData = forms.dirtyAndValidate(formData, name);
         setFormData(newFormData);
     }
 

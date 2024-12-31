@@ -6,6 +6,7 @@ import {useNavigate} from "react-router-dom";
 import {ContextToken} from "../../../utils/context-token.ts";
 import FormInput from "../../../components/FormInput";
 import * as forms from "../../../utils/forms.ts";
+import {dirtyAndValidate} from "../../../utils/forms.ts";
 
 export default function Login() {
 
@@ -55,11 +56,12 @@ export default function Login() {
     }
 
     function handleInputChange(event: any) {
-        // pega o valor que esta digitado na caixinha
-        const value = event.target.value;
-        const name = event.target.name;
-        // consultar o arquivo forms.ts
-        setFormData(forms.update(formData, name, value));
+        setFormData(forms.updateAndValidate(formData, event.target.name, event.target.value))
+    }
+
+    function handleTurnDirty(name: string) {
+        const newFormData = forms.dirtyAndValidate(formData, name);
+        setFormData(newFormData);
     }
 
     return (
@@ -82,6 +84,7 @@ export default function Login() {
                                         placeholder="Email"
                                          */
                                         className="dsc-form-control"
+                                        onTurnDirty={handleTurnDirty}
                                         /* onChange deve ser mantido, pois toda vez que algo for digitado na caixinha,
                                          o valor seja alterado
                                          */
@@ -94,6 +97,7 @@ export default function Login() {
                                     <FormInput
                                         { ...formData.password }
                                         className="dsc-form-control"
+                                        onTurnDirty={handleTurnDirty}
                                         onChange={handleInputChange}
                                     />
                                 </div>
