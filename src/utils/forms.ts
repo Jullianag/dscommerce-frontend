@@ -24,3 +24,16 @@ export function updateAll(inputs: any, newValues: any) {
 
     return newInputs;
 }
+
+export function validate(inputs: any, name: string) {
+
+    // retorna o mesmo inputs caso a função validation não exista
+    if (!inputs[name].validation) {
+        return inputs;
+    }
+
+    // vai ser se o campo for inválido
+    const isInvalid = !inputs[name].validation(inputs[name].value);
+
+    return { ...inputs, [name]: {...inputs[name], invalid: isInvalid.toString()}};
+}
