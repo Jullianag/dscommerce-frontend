@@ -108,11 +108,24 @@ export default function ProductForm() {
         setFormData(newFormData);
     }
 
+    function handleSubmit(event: any) {
+        event.preventDefault();
+
+        const formDataValidate = forms.dirtyAndValidateAll(formData);
+        if (forms.hasAnyInvalid(formDataValidate)) {
+            setFormData(formDataValidate);
+            // corta a submissao do formulario
+            return;
+        }
+
+        console.log(forms.toValue(formData))
+    }
+
     return (
         <main>
             <section id="product-form-section" className="dsc-container">
                 <div className="dsc-product-form-container">
-                    <form className="dsc-card dsc-form">
+                    <form className="dsc-card dsc-form" onSubmit={handleSubmit}>
                         <h2>Dados do produto</h2>
                         <div className="dsc-form-controls-container">
                             <div>
