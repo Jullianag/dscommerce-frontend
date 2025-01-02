@@ -115,9 +115,9 @@ export default function ProductForm() {
 
         const formDataValidate = forms.dirtyAndValidateAll(formData);
         if (forms.hasAnyInvalid(formDataValidate)) {
-            setFormData(formDataValidate);
-            // corta a submissao do formulario
-            return;
+            //setFormData(formDataValidate);
+            // corta o submit do formulario
+            //return;
         }
 
         const requestBody = forms.toValue(formData);
@@ -134,7 +134,11 @@ export default function ProductForm() {
         request
             .then(() => {
                 navigate("/admin/products")
-            });
+            })
+            .catch(error => {
+                const newInputs = forms.setBackendErrors(formData, error.response.data.errors);
+                setFormData(newInputs);
+            })
     }
 
     return (
