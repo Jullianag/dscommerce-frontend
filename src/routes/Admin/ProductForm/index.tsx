@@ -115,9 +115,9 @@ export default function ProductForm() {
 
         const formDataValidate = forms.dirtyAndValidateAll(formData);
         if (forms.hasAnyInvalid(formDataValidate)) {
-            //setFormData(formDataValidate);
+            setFormData(formDataValidate);
             // corta o submit do formulario
-            //return;
+            return;
         }
 
         const requestBody = forms.toValue(formData);

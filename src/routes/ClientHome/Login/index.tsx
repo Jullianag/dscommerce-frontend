@@ -1,5 +1,4 @@
 import './styles.css';
-import {loginRequest} from "../../../services/auth-service.ts";
 import {useContext, useState} from "react";
 import * as authService from "../../../services/auth-service.ts";
 import {useNavigate} from "react-router-dom";
@@ -12,6 +11,8 @@ export default function Login() {
     const { setContextTokenPayload } = useContext(ContextToken);
 
     const navigate = useNavigate();
+
+    const [submitResponseFail, setSubmitResponseFail] = useState(false);
 
     const [formData, setFormData] = useState<any>({
         // o username e o password passaram a ser objetos
@@ -36,7 +37,15 @@ export default function Login() {
 
     function handleSubmit(event: any) {
         event.preventDefault();
-        loginRequest(formData)
+
+        setSubmitResponseFail(false);
+
+        const formDataValidate = forms.dirtyAndValidateAll(formData);
+        if (forms.hasAnyInvalid(formDataValidate)) {
+            setFormData(formDataValidate);
+            return;
+        }
+
         // consutlar forms.ts
         authService.loginRequest(forms.toValue(formData))
             .then(response => {
@@ -49,8 +58,8 @@ export default function Login() {
 
                 navigate("/cart");
             })
-            .catch(error => {
-                console.log("Erro no login", error);
+            .catch(() => {
+                setSubmitResponseFail(true);
             })
     }
 
@@ -102,8 +111,15 @@ export default function Login() {
                                 </div>
                             </div>
 
+                            {
+                                submitResponseFail &&
+                                <div className="dsc-form-global-error">
+                                    Usuário ou senha inválidos
+                                </div>
+                            }
+
                             <div className="dsc-login-form-buttons dsc-mt20">
-                                <button type="submit" className="dsc-btn dsc-btn-blue">Entrar</button>
+                            <button type="submit" className="dsc-btn dsc-btn-blue">Entrar</button>
                             </div>
                         </form>
                     </div>
