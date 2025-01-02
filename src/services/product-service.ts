@@ -1,5 +1,6 @@
 import {RequestBackend} from "../utils/requests.ts";
 import {AxiosRequestConfig} from "axios";
+import {ProductDTO} from "../models/product.ts";
 
 // sempre usar o sufixo Request
 export function findPageRequest(page: number, name: string, size = 12, sort = "name") {
@@ -18,7 +19,7 @@ export function findPageRequest(page: number, name: string, size = 12, sort = "n
 }
 
 export function findById(id: number) {
-    return RequestBackend({ url: `/products/${id}`});
+    return RequestBackend({url: `/products/${id}`});
 }
 
 export function deletebyId(id: number) {
@@ -29,5 +30,25 @@ export function deletebyId(id: number) {
         withCredentials: true
     }
 
+    return RequestBackend(config);
+}
+
+export function updateRequest(obj: ProductDTO) {
+    const config: AxiosRequestConfig = {
+        method: "PUT",
+        url: `/products/${obj.id}`,
+        withCredentials: true,
+        data: obj
+    }
+    return RequestBackend(config);
+}
+
+export function insertRequest(obj: ProductDTO) {
+    const config: AxiosRequestConfig = {
+        method: "POST",
+        url: "/products/",
+        withCredentials: true,
+        data: obj
+    }
     return RequestBackend(config);
 }

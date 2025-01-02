@@ -1,5 +1,5 @@
 import "./styles.css";
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import FormInput from "../../../components/FormInput";
 import * as forms from "../../../utils/forms.ts";
@@ -11,6 +11,8 @@ import FormSelect from "../../../components/FormSelect";
 import {selectStyles} from "../../../utils/select.ts";
 
 export default function ProductForm() {
+
+    const navigate = useNavigate();
 
     // para ter condições de acessar o parâmetro da rota
     const params = useParams();
@@ -118,7 +120,21 @@ export default function ProductForm() {
             return;
         }
 
-        console.log(forms.toValue(formData))
+        const requestBody = forms.toValue(formData);
+
+        if (isEditing) {
+            requestBody.id = params.productId;
+        }
+
+        // ternário
+        const request = isEditing
+            ? productService.updateRequest(requestBody)
+            : productService.insertRequest(requestBody);
+
+        request
+            .then(() => {
+                navigate("/admin/products")
+            });
     }
 
     return (
